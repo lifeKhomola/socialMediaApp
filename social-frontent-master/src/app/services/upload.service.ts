@@ -1,13 +1,34 @@
+import { HttpClient } from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {GLOBAL} from './global';
 
 @Injectable()
 export class UploadService {
     public url: string;
+    public token: string;
+    private baseUrl = 'http://localhost:3800/api/upload'
 
-    constructor() {
+    constructor(private http: HttpClient) {
         this.url = GLOBAL.url;
     }
+    getToken() {
+        let token = localStorage.getItem('token');
+
+        if (token != "undefined") {
+            this.token = token;
+        } else {
+            this.token = null;
+        }
+
+        return this.token;
+    }
+
+    upload(image: any) {
+        
+        return this.http.post(`${this.baseUrl}`, image)
+      }
+
+
 
     makeFileRequest(url: string, params: Array<string>, files: Array<File>, token: string, name: string) {
         return new Promise(function(resolve, reject) {

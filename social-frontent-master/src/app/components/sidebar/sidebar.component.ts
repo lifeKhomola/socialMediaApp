@@ -18,6 +18,7 @@ export class SidebarComponent implements OnInit {
     public stats;
     public status;
     public publication: Publication;
+    file: any = '';
 
     constructor(
         private _route: ActivatedRoute,
@@ -97,4 +98,8 @@ export class SidebarComponent implements OnInit {
     fileChangeEvent(fileInput: any) {
         this.filesToUpload = <Array<File>>fileInput.target.files;
     }
+    
+    selectThisImage(myEvent: any) {
+        this.file = myEvent.target.files[0];
+      }
 }

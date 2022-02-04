@@ -8,12 +8,17 @@ var Publication = require('../models/publication');
 var User = require('../models/user');
 var Follow = require('../models/follow');
 
+const multer  = require('multer')
+const upload = multer({ dest: 'images/' })
+
 function savePublication(req, res) {
     var params = req.body;
     if (!params.text)
         return res.status(200).send({message: "Text field is required."});
 
+
     var publication = new Publication();
+
     publication.text = params.text;
     publication.file = 'null';
     publication.user = req.user.sub;
@@ -27,6 +32,7 @@ function savePublication(req, res) {
         return res.status(200).send({publication: publicationStored});
     });
 }
+
 
 function getPublications(req, res) {
     var page = 1;
@@ -138,6 +144,7 @@ function uploadImage(req, res) {
         return res.status(200).send({message: "Ups, please upload any file."});
     }
 }
+
 
 function removeFilesOfUploads(res, file_path, message) {
     fs.unlink(file_path, (err) => {
