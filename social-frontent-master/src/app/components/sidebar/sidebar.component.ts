@@ -51,6 +51,7 @@ export class SidebarComponent implements OnInit {
     }
 
     onSubmit(form, event) {
+         console.log(form.value);
         this._publicationService.addPublication(this.token, this.publication).subscribe(
             response => {
                 if (response.publication) {

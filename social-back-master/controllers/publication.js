@@ -13,14 +13,16 @@ const upload = multer({ dest: 'images/' })
 
 function savePublication(req, res) {
     var params = req.body;
+    console.log("params",params);
+    console.log("files",params.file);
+
     if (!params.text)
         return res.status(200).send({message: "Text field is required."});
-
 
     var publication = new Publication();
 
     publication.text = params.text;
-    publication.file = 'null';
+    publication.file = params.file;
     publication.user = req.user.sub;
     publication.created_at = moment().unix();
     publication.save((err, publicationStored) => {
@@ -116,9 +118,11 @@ function deletePublication(req, res) {
 
 function uploadImage(req, res) {
     var publicationId = req.params.id;
+    console.log(req.file);
     if (req.files) {
-        var file_path = req.files.image.path;
-        var file_split = file_path.split('/');
+        // var file_path = req.file;
+    //    console.log(req.files);
+        /* var file_split = file_path.split('/');
         var file_name = file_split[2];
         var ext_split = file_name.split('\.');
         var file_ext = ext_split[1];
@@ -139,7 +143,7 @@ function uploadImage(req, res) {
             });
         } else {
             return removeFilesOfUploads(res, file_path, "Ups, please upload a valid image file.");
-        }
+        } */
     } else {
         return res.status(200).send({message: "Ups, please upload any file."});
     }
@@ -154,6 +158,7 @@ function removeFilesOfUploads(res, file_path, message) {
 
 function getImageFile(req, res) {
     var image_file = req.params.imageFile;
+    console.log(image_file);
     var path_file = './uploads/publications/' + image_file;
     fs.exists(path_file, (exists) => {
         if (exists) {
